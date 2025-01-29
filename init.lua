@@ -203,14 +203,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Cancel highlight no cursor line in help type file
-vim.api.nvim_create_autocmd('BufEnter', {
-  desc = 'Cancel cursorline highlight on help type file',
-  group = vim.api.nvim_create_augroup('help-opt-cursor-cancel', { clear = true }),
+-- custom option, keymap in help filetype
+local help_filetype_custom = vim.api.nvim_create_augroup('help_filetype_custom', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'help',
+  group = help_filetype_custom,
   callback = function()
-    if vim.bo.buftype == 'help' then
-      vim.opt.cursorline = false
-    end
+    vim.opt.cursorline = false
+    vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = true, noremap = true, silent = true })
   end,
 })
 
